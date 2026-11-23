@@ -121,6 +121,16 @@ public static class BuildScript
             options = BuildOptions.None,
         });
 
+        // The site's root index.html is the same page, pointing at this build's files.
+        if (report.summary.result == UnityEditor.Build.Reporting.BuildResult.Succeeded)
+        {
+            string html = File.ReadAllText(Path.Combine(outDir, "index.html"))
+                .Replace("\"Build/", "\"projects/unity-test/Build/")
+                .Replace("\"StreamingAssets\"", "\"projects/unity-test/StreamingAssets\"")
+                .Replace("<title>" + PlayerSettings.productName + "</title>", "<title>Alexander De Smet</title>");
+            File.WriteAllText(Path.Combine(outDir, "../../index.html"), html);
+        }
+
         Debug.Log($"[BuildScript] Result: {report.summary.result}, size {report.summary.totalSize / 1024 / 1024} MB -> {outDir}");
         if (Application.isBatchMode)
             EditorApplication.Exit(report.summary.result == UnityEditor.Build.Reporting.BuildResult.Succeeded ? 0 : 1);

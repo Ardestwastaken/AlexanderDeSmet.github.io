@@ -3,35 +3,37 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Alexander De Smet · Portfolio</title>
+  <title>Alexander De Smet</title>
   <style>
-    :root { --bg: #0f1117; --card: #181b24; --text: #e8e9ee; --muted: #9aa0b0; --accent: #f2c14e; }
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); line-height: 1.5; }
-    main { max-width: 1040px; margin: 0 auto; padding: 48px 16px; }
-    h1 { margin: 0 0 4px; font-size: 2.2rem; }
-    .sub { color: var(--muted); margin: 0 0 40px; }
-    .card { background: var(--card); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
-    .card h2 { margin: 0 0 6px; font-size: 1.3rem; }
-    .card p { margin: 0 0 16px; color: var(--muted); }
-    .frame { position: relative; width: 100%; aspect-ratio: 16 / 10; border-radius: 8px; overflow: hidden; background: #000; }
-    .frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-    a { color: var(--accent); }
+    html, body { margin: 0; height: 100%; background: #14161f; overflow: hidden; font-family: system-ui, sans-serif; }
+    #unity-canvas { width: 100%; height: 100%; display: block; background: #14161f; outline: none; }
+    #loader { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: #9aa0b0; font-size: 14px; }
+    #bar { width: 200px; height: 6px; background: #2a2e3b; border-radius: 3px; overflow: hidden; }
+    #fill { width: 0; height: 100%; background: #f2c14e; transition: width .2s; }
+    #error { color: #ff8080; max-width: 80%; text-align: center; }
   </style>
 </head>
 <body>
-  <main>
-    <h1>Alexander De Smet</h1>
-    <p class="sub">Portfolio</p>
-
-    <section class="card">
-      <h2>Unity WebGL Test</h2>
-      <p>A small interactive 3D scene built in Unity 6. Drag to orbit, scroll to zoom, click a shape.
-        <a href="projects/unity-test/">Open full page</a></p>
-      <div class="frame">
-        <iframe src="projects/unity-test/" title="Unity WebGL test" loading="lazy" allowfullscreen></iframe>
-      </div>
-    </section>
-  </main>
+  <canvas id="unity-canvas" tabindex="-1"></canvas>
+  <div id="loader"><div>Loading…</div><div id="bar"><div id="fill"></div></div><div id="error"></div></div>
+  <script src="projects/unity-test/Build/unity-test.loader.js"></script>
+  <script>
+    var config = {
+      dataUrl: "projects/unity-test/Build/unity-test.data",
+      frameworkUrl: "projects/unity-test/Build/unity-test.framework.js",
+      codeUrl: "projects/unity-test/Build/unity-test.wasm",
+      streamingAssetsUrl: "projects/unity-test/StreamingAssets",
+      companyName: "Alexander De Smet",
+      productName: "Unity Test",
+      productVersion: "1.0",
+    };
+    createUnityInstance(document.querySelector("#unity-canvas"), config, function (p) {
+      document.querySelector("#fill").style.width = (100 * p) + "%";
+    }).then(function () {
+      document.querySelector("#loader").remove();
+    }).catch(function (e) {
+      document.querySelector("#error").textContent = e;
+    });
+  </script>
 </body>
 </html>
