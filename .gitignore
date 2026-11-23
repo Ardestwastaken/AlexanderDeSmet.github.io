@@ -1,0 +1,15 @@
+# Local tooling
+.claude/
+
+# Unity generated folders (source project lives in unity-src/)
+unity-src/**/[Ll]ibrary/
+unity-src/**/[Tt]emp/
+unity-src/**/[Oo]bj/
+unity-src/**/[Bb]uild/
+unity-src/**/[Bb]uilds/
+unity-src/**/[Ll]ogs/
+unity-src/**/[Uu]ser[Ss]ettings/
+unity-src/**/*.csproj
+unity-src/**/*.sln
+unity-src/**/*.slnx
+unity-src/**/.vs/
